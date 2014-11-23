@@ -1,3 +1,9 @@
+///deneme uıpdate  :)
+/*
+ şimdi save yapıcaz ve update silme bunları
+ ok
+ ok :)
+ * */
 package com.example.soft;
 
 import java.util.ArrayList;
