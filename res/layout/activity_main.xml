@@ -1,0 +1,88 @@
+
+
+    <RelativeLayout
+         xmlns:android="http://schemas.android.com/apk/res/android"
+         xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         tools:context="com.example.soft.MainActivity" >
+   
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFCCCC"
+       
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp" 
+        android:background="#FF0066">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.20"
+            android:gravity="bottom"
+            android:text="Tarihler"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+             android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:text="Etkinlikler"
+            android:textColor="#000000" />
+
+       
+
+    </LinearLayout>
+    
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp" 
+        android:background="#6633FF">
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+             />
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            />
+
+        <Button
+            android:id="@+id/btnUygula"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Uygula" />
+
+    </LinearLayout>
+    <ListView
+    android:id="@+id/listView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true" >
+</ListView>
+</LinearLayout>
+
+
+
+ </RelativeLayout>
