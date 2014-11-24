@@ -23,7 +23,34 @@ namespace WebService
     {
 
         [WebMethod]
-        public List<string> GetData()
+        public List<string[]> GetDatas()
+        {
+            List<string[]> liste = new List<string[]>();
+            HtmlWeb hw = new HtmlWeb();
+            HtmlAgilityPack.HtmlDocument doc = hw.Load("https://www.anadolu.edu.tr/tr/etkinlikler-listesi");
+            HtmlNodeCollection linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
+            foreach (HtmlNode linkNode in linkNodes)
+            {
+                HtmlAttribute link = linkNode.Attributes["href"];
+
+                string str_link = link.Value;
+
+
+
+                if (str_link.Contains("/?q=node"))
+                {
+                    Uri url = new Uri("https://www.anadolu.edu.tr" + str_link);
+
+                    liste.Add(GetData(url));
+                }
+            }
+
+            return liste;
+        }
+
+
+        [WebMethod]
+        public string[] GetData(Uri url)
         {
            
             Uri url = new Uri("https://www.anadolu.edu.tr/tr/etkinlikler-listesi");
@@ -34,29 +61,19 @@ namespace WebService
 
             HtmlAgilityPack.HtmlDocument dokuman = new HtmlAgilityPack.HtmlDocument();
             dokuman.LoadHtml(html);
-        
-            HtmlNodeCollection basliklar = dokuman.DocumentNode.SelectNodes("//div/h3");
-            HtmlNodeCollection icerikler = dokuman.DocumentNode.SelectNodes("//div[@class='views-field views-field-php']");
-            HtmlNodeCollection tarihler = dokuman.DocumentNode.SelectNodes("//div[@class='field-content']");
+
+            HtmlNodeCollection baslik = dokuman.DocumentNode.SelectNodes("//div/h1");
+            HtmlNodeCollection yer = dokuman.DocumentNode.SelectNodes("//div[@class='field-items']");
+            HtmlNodeCollection duzenleyen = dokuman.DocumentNode.SelectNodes("//div[@class='field-item even']");
+            HtmlNodeCollection tur = dokuman.DocumentNode.SelectNodes("//li[@class='taxonomy-term-reference-0']");
+            HtmlNodeCollection date_start = dokuman.DocumentNode.SelectNodes("//span[@class='date-display-start']");
+            HtmlNodeCollection date_end = dokuman.DocumentNode.SelectNodes("//span[@class='date-display-end']");
+            HtmlNodeCollection date_single = dokuman.DocumentNode.SelectNodes("//span[@class='date-display-single']");
      
             List<string> liste = new List<string>();
          
 
-            foreach (var baslik in basliklar)
-            {
-                liste.Add(baslik.InnerText);
-                
-            }
-            foreach (var icerik in icerikler)
-            {
-                liste.Add(icerik.InnerText);
-                
-            }
-            foreach (var tarih in tarihler)
-            {
-                liste.Add(tarih.InnerText);
-                
-            }
+            
  
             return liste;
         }
