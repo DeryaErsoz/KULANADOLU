@@ -1,19 +1,19 @@
-///deneme uıpdate  :)
-/*
- şimdi save yapıcaz ve update silme bunları
- ok
- ok :)
- * */
+
 package com.example.soft;
 
 import java.util.ArrayList;
+
+import com.example.soft.R;
+
 
 
 
 import android.app.Activity;
 import android.app.AlertDialog;
+
 import android.content.Context;
 import android.content.DialogInterface;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +32,8 @@ import android.widget.AdapterView.OnItemClickListener;
  
 public class MainActivity extends Activity 
 {
-	
+	final CharSequence[] items={"Bir saat önce!","Bir gün önce!","İki gün önce!"};
+	boolean[] itemsChecked = new boolean[items.length];
 	  
  
           MyCustomAdapter dataAdapter = null;
@@ -68,17 +69,17 @@ public class MainActivity extends Activity
  
                     States _states = new States("Tiyatro","Tiyatro yeri içeriği",false);
                     stateList.add(_states);
-                    _states = new States("Sinema","Delhi",true);
+                    _states = new States("Sinema","Sınema İceriği",true);
                     stateList.add(_states);
                     _states = new States("Kurlar","Goa",false);
                     stateList.add(_states);
-                    _states = new States("Kongre","Jammu & Kashmir",true);
+                    _states = new States("Kongre","Kongre İçerigi",true);
                     stateList.add(_states);
-                    _states = new States("Panel","Karnataka",true);
+                    _states = new States("Panel","Panel İçerigi",true);
                     stateList.add(_states);
-                    _states = new States("Seminer","Kerala",false);
+                    _states = new States("Seminer","Seminer  İçerigi",false);
                     stateList.add(_states);
-                    _states = new States("Şenlik","Rajasthan",false);
+                    _states = new States("Şenlik","Senlik İçeriği",false);
                     stateList.add(_states);
                     _states = new States("Yarışmalar","West Bengal",false);
                     stateList.add(_states);
@@ -159,9 +160,14 @@ private class MyCustomAdapter extends ArrayAdapter<States>
  
                                     
  
-                                    _state.setSelected(cb.isChecked());
-                                     Toast.makeText(getApplicationContext(), "Clicked on Checkbox: " + " is " + cb.isChecked(), 
-                                            Toast.LENGTH_LONG).show();
+                                  if(  cb.isChecked()==true){
+                                	  _state.setSelected(cb.isChecked());
+                                    showDialog(v);
+                                  }
+                                  else{
+                                	  _state.setSelected(cb.isChecked());
+                                  }
+                                          
                                  }
                         	
 							
@@ -188,38 +194,35 @@ private class MyCustomAdapter extends ArrayAdapter<States>
  
 }
     
-   
-       /* private void checkButtonClick() 
-        {
- 
-                Button myButton = (Button) findViewById(R.id.findSelected);
- 
-                myButton.setOnClickListener(new OnClickListener() 
-                {
- 
-                            @Override
-                            public void onClick(View v) 
-                            {
- 
-                                            StringBuffer responseText = new StringBuffer();
-                                            responseText.append("The following were selected...\n");
- 
-                                            ArrayList<States> stateList = dataAdapter.stateList;
- 
-                                            for(int i=0;i<stateList.size();i++)
-                                            {
-                                                 States state = stateList.get(i);
- 
-                                                if(state.isSelected())
-                                                {
-                                                    responseText.append("\n" + state.getName());
-                                                }
-                                            }
- 
-                                            Toast.makeText(getApplicationContext(),
-                                            responseText, Toast.LENGTH_LONG).show();
-                            }
-                });
-        }*/
- 
+public void showDialog(View v)
+{
+	
+	AlertDialog.Builder builder=new AlertDialog.Builder(this);
+	builder.setTitle("Hatýrlatma ");
+	builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+        	//String selectedTech="Selected Tech - ";
+            for (int i = 0; i < items.length; i++) {
+            if (itemsChecked[i]) {
+                
+            	//selectedTech=selectedTech+items[i]+" ";
+                itemsChecked[i]=false;
+            }
+        }
+        
+        }
+    });
+	
+	builder.setMultiChoiceItems(items, new boolean[]{false,false,false}, new DialogInterface.OnMultiChoiceClickListener() {
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+				itemsChecked[which]=isChecked;	
+		}
+	});
+	builder.show();
+}
+
 }

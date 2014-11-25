@@ -11,13 +11,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFCCCC"
+    android:background="#990000"
        
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp" 
-        android:background="#FF0066">
+        android:background="#990000">
 
         <TextView
             android:id="@+id/textView1"
@@ -49,7 +49,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp" 
-        android:background="#6633FF">
+        android:background="#990000">
 
         <Spinner
             android:id="@+id/spinner1"
@@ -79,7 +79,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_alignParentBottom="true"
-    android:layout_alignParentLeft="true" >
+    android:layout_alignParentLeft="true" 
+    android:background="#FFFFFF">
 </ListView>
 </LinearLayout>
 
