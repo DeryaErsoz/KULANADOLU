@@ -52,16 +52,18 @@ namespace WebService
         [WebMethod]
         public string[] GetData(Uri url)
         {
-           
-            Uri url = new Uri("https://www.anadolu.edu.tr/tr/etkinlikler-listesi");
+
             WebClient client = new WebClient();
+
             client.Encoding = System.Text.Encoding.UTF8;
+
             string html = client.DownloadString(url);
-            
 
             HtmlAgilityPack.HtmlDocument dokuman = new HtmlAgilityPack.HtmlDocument();
+
             dokuman.LoadHtml(html);
 
+            // Indirdigimiz html kodlarini bir HtmlDocment nesnesine yüklüyoruz.  
             HtmlNodeCollection baslik = dokuman.DocumentNode.SelectNodes("//div/h1");
             HtmlNodeCollection yer = dokuman.DocumentNode.SelectNodes("//div[@class='field-items']");
             HtmlNodeCollection duzenleyen = dokuman.DocumentNode.SelectNodes("//div[@class='field-item even']");
@@ -69,11 +71,22 @@ namespace WebService
             HtmlNodeCollection date_start = dokuman.DocumentNode.SelectNodes("//span[@class='date-display-start']");
             HtmlNodeCollection date_end = dokuman.DocumentNode.SelectNodes("//span[@class='date-display-end']");
             HtmlNodeCollection date_single = dokuman.DocumentNode.SelectNodes("//span[@class='date-display-single']");
-     
-            List<string> liste = new List<string>();
-         
 
-            
+            string[] liste = new string[6];
+
+            string str_baslik = "";
+            try
+            {
+                str_baslik = baslik[0].InnerText;
+                str_baslik = str_baslik.Replace("&#039;", "'");
+                str_baslik = str_baslik.Replace("&quot;", "\"");
+            }
+            catch (Exception e)
+            {
+                str_baslik = "";
+            }
+
+            liste[0] = str_baslik;
  
             return liste;
         }
