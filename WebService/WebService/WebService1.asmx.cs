@@ -73,6 +73,19 @@ namespace WebService
             HtmlNodeCollection date_single = dokuman.DocumentNode.SelectNodes("//span[@class='date-display-single']");
 
             string[] liste = new string[6];
+            int i_yer = 0;
+            int i_duzenleyen = 0;
+            if (yer.Count == 4)
+            {
+                i_yer = 1;
+                i_duzenleyen = 2;
+            }
+            else if (yer.Count == 3)
+            {
+                i_yer = 0;
+                i_duzenleyen = 1;
+            }
+
 
             string str_baslik = "";
             try
@@ -86,9 +99,95 @@ namespace WebService
                 str_baslik = "";
             }
 
+            string str_yer = "";
+            try
+            {
+                str_yer = yer[i_yer].InnerText;
+                str_yer = str_yer.Replace("&#039;", "'");
+                str_yer = str_yer.Replace("&quot;", "\"");
+            }
+            catch (Exception e)
+            {
+                str_yer = "";
+            }
+
+            string str_duzenleyen = "";
+            try
+            {
+                str_duzenleyen = duzenleyen[i_duzenleyen].InnerText;
+                str_duzenleyen = str_duzenleyen.Replace("&#039;", "'");
+                str_duzenleyen = str_duzenleyen.Replace("&quot;", "\"");
+            }
+            catch (Exception e)
+            {
+                str_duzenleyen = "";
+            }
+
+            string str_tur = "";
+            try
+            {
+                str_tur = tur[0].InnerText;
+                str_tur = str_tur.Replace("&#039;", "'");
+                str_tur = str_tur.Replace("&quot;", "\"");
+
+                             
+
+            }
+            catch (Exception e)
+            {
+                str_tur = "";
+            }
+
+            string str_date_single = "";
+            try
+            {
+                str_date_single = date_single[0].InnerText;
+                str_date_single = str_date_single.Replace("&#039;", "'");
+                str_date_single = str_date_single.Replace("&quot;", "\"");
+            }
+            catch (Exception e)
+            {
+                str_date_single = "";
+            }
+
+            string str_date_start = "";
+            try
+            {
+                str_date_start = date_start[0].InnerText;
+                str_date_start = str_date_start.Replace("&#039;", "'");
+                str_date_start = str_date_start.Replace("&quot;", "\"");
+            }
+            catch (Exception e)
+            {
+                str_date_start = "";
+            }
+
+            string str_date_end = "";
+            try
+            {
+                str_date_end = date_end[0].InnerText;
+                str_date_end = str_date_end.Replace("&#039;", "'");
+                str_date_end = str_date_end.Replace("&quot;", "\"");
+            }
+            catch (Exception e)
+            {
+                str_date_end = "";
+            }
+
+            if (str_date_single != "")
+            {
+                str_date_start = str_date_single;
+                str_date_end = str_date_single;
+            }
+
             liste[0] = str_baslik;
- 
-            return liste;
+            liste[1] = str_yer;
+            liste[2] = str_duzenleyen;
+            liste[3] = str_tur;
+            liste[4] = str_date_start;
+            liste[5] = str_date_end;
+
+                        return liste;
         }
    
 
