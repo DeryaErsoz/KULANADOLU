@@ -138,12 +138,13 @@ namespace WebService
                 str_tur = "";
             }
 
-            string str_date_single = "";
+          string str_date_single = "";
             try
             {
-                str_date_single = date_single[0].InnerText;
+                str_date_single = date_single[0].Attributes["content"].Value;
                 str_date_single = str_date_single.Replace("&#039;", "'");
                 str_date_single = str_date_single.Replace("&quot;", "\"");
+                str_date_single = str_date_single.Replace("'", "");
             }
             catch (Exception e)
             {
@@ -153,9 +154,11 @@ namespace WebService
             string str_date_start = "";
             try
             {
-                str_date_start = date_start[0].InnerText;
+                str_date_start = date_start[0].Attributes["content"].Value;
+                //str_date_start = date_start[0].InnerText;
                 str_date_start = str_date_start.Replace("&#039;", "'");
                 str_date_start = str_date_start.Replace("&quot;", "\"");
+                str_date_start = str_date_start.Replace("'", "");
             }
             catch (Exception e)
             {
@@ -165,9 +168,10 @@ namespace WebService
             string str_date_end = "";
             try
             {
-                str_date_end = date_end[0].InnerText;
+                str_date_end = date_end[0].Attributes["content"].Value;
                 str_date_end = str_date_end.Replace("&#039;", "'");
                 str_date_end = str_date_end.Replace("&quot;", "\"");
+                str_date_end = str_date_end.Replace("'", "");
             }
             catch (Exception e)
             {
