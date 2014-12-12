@@ -1,11 +1,10 @@
 
 
     <RelativeLayout
-         xmlns:android="http://schemas.android.com/apk/res/android"
          xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-         tools:context="com.example.soft.MainActivity" >
+         tools:context="com.example.soft.MainActivity" xmlns:android="http://schemas.android.com/apk/res/android">
    
 <LinearLayout
     android:layout_width="match_parent"
@@ -34,53 +33,65 @@
             android:id="@+id/textView2"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="bottom"
             android:layout_marginRight="10dp"
-             android:layout_gravity="bottom"
+            android:layout_weight="0.02"
             android:gravity="bottom"
             android:text="Etkinlikler"
             android:textColor="#000000" />
 
-       
-
     </LinearLayout>
-    
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp" 
-        android:background="#990000">
+        android:layout_height="60dp"
+        android:background="#990000" >
 
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-             />
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="0dp"         
+             android:background="#CCCCCC"
+            android:textColor="#000000" 
+            android:gravity="center"
+            android:hint="Tarih secin.."/>
+
+        <ImageButton
+            android:id="@+id/imgDate"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:background="@drawable/logo2" />
 
         <Spinner
             android:id="@+id/spinner2"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_width="90dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            />
+            android:textColor="#000000" />
 
         <Button
             android:id="@+id/btnUygula"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Uygula" />
-
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="Uygula" 
+            android:gravity="center"
+            android:layout_marginRight="3dp"
+             android:layout_marginBottom="5dp"
+             
+             android:background="#CCCCCC"
+             android:textColor="#000000"/>
     </LinearLayout>
+
     <ListView
     android:id="@+id/listView1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true" 
-    android:background="#FFFFFF">
+    android:background="#CCCCCC">
 </ListView>
 </LinearLayout>
 

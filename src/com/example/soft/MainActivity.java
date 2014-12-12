@@ -1,29 +1,36 @@
 
 package com.example.soft;
 
-import java.util.ArrayList;
-
+import com.example.soft.MainActivity;
 import com.example.soft.R;
-
-
-
 
 import android.app.Activity;
 import android.app.AlertDialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
-
+import java.util.ArrayList;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,9 +39,28 @@ import android.widget.AdapterView.OnItemClickListener;
  
 public class MainActivity extends Activity 
 {
+	TextView date;
+	ImageButton imgDate; 
+	private DateFormat fmtDateAndTime = DateFormat.getDateInstance();
+   
+   
+   
+   	private Calendar myCalendar = Calendar.getInstance();
+   	DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+         	public void onDateSet(DatePicker view, int year, int monthOfYear,
+                       	int dayOfMonth) {
+                	myCalendar.set(Calendar.YEAR, year);
+                	myCalendar.set(Calendar.MONTH, monthOfYear);
+                	myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                	updateDate();
+         	}
+   	};
+	private void updateDate() {
+     	date.setText(fmtDateAndTime.format(myCalendar.getTime()));
+	}
 	final CharSequence[] items={"Bir saat önce!","Bir gün önce!","İki gün önce!"};
 	boolean[] itemsChecked = new boolean[items.length];
-	  
+	
  
           MyCustomAdapter dataAdapter = null;
  
@@ -43,8 +69,18 @@ public class MainActivity extends Activity
             {
                super.onCreate(savedInstanceState);
                setContentView(R.layout.activity_main);
-               Spinner spinner1=(Spinner)findViewById(R.id.spinner1);
+              
        	       Button Uygula =(Button) findViewById(R.id.btnUygula);
+       	       date =(TextView)findViewById(R.id.txtDate);
+       	       imgDate =(ImageButton)findViewById(R.id.imgDate);
+       	    imgDate.setOnClickListener(new View.OnClickListener() {
+            	public void onClick(View v) {
+                   	new DatePickerDialog(MainActivity.this, d, myCalendar
+                             	.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),
+                               myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            	}
+     	});
+       	    
        		String[] items = new String[] {"Sinema", "Tiyatro", "Sergi"};
        		Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
        		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
