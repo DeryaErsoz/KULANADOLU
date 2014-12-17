@@ -18,7 +18,11 @@ public class Splash extends Activity
         mSplashThread = new Thread(){
             @Override public void run(){ 
                 try { 
-                	sleep(3000);             
+                	sleep(3000);  
+                	
+                	
+                	WebService etkinlikleri_getir = new WebService();
+                	etkinlikleri_getir.execute();
                      
                         Intent i=new Intent(Splash.this,MainActivity.class);
                         startActivity(i);
