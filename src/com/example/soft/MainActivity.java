@@ -13,9 +13,18 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -39,11 +48,10 @@ import android.widget.AdapterView.OnItemClickListener;
  
 public class MainActivity extends Activity 
 {
+	private static final String WebserviceClient = null;
 	TextView date;
 	ImageButton imgDate; 
 	private DateFormat fmtDateAndTime = DateFormat.getDateInstance();
-   
-   
    
    	private Calendar myCalendar = Calendar.getInstance();
    	DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
@@ -82,6 +90,8 @@ public class MainActivity extends Activity
      	});
        	    
        		String[] items = new String[] {"Sinema", "Tiyatro", "Sergi"};
+       		
+       		
        		Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
        		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
        		            android.R.layout.simple_spinner_item, items);
@@ -94,12 +104,9 @@ public class MainActivity extends Activity
  
             }
             
-           
-            
- 
             private void displayListView()
             {
- 
+             	
                     //Array list of countries
                     ArrayList<States> stateList = new ArrayList<States>();
  
@@ -165,9 +172,9 @@ private class MyCustomAdapter extends ArrayAdapter<States>
  
    
     @Override
-   public View getView(int position, View convertView, ViewGroup parent) 
+   public View getView(final int position, View convertView, ViewGroup parent) 
     {
- 
+
             ViewHolder holder = null;
  
             Log.v("ConvertView", String.valueOf(position));
@@ -224,6 +231,41 @@ private class MyCustomAdapter extends ArrayAdapter<States>
             holder.name.setChecked(state.isSelected());
  
             holder.name.setTag(state);
+            
+            convertView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					 // Create custom dialog object
+	                final Dialog dialog = new Dialog(MainActivity.this);
+	                // Include dialog.xml file
+	                dialog.setContentView(R.layout.detay);
+	                // Set dialog title
+	                dialog.setTitle("Etkinlik Detayı");
+	               
+	 
+	                // set values for custom dialog components - text, image and button
+	                TextView title = (TextView) dialog.findViewById(R.id.title_txt);
+	                title.setText("title");
+	                TextView date = (TextView) dialog.findViewById(R.id.date_txt);
+	                date.setText("date");
+	                TextView location = (TextView) dialog.findViewById(R.id.location_txt);
+	                location.setText("location");
+	             
+	 
+	                dialog.show();
+	                 
+	                Button declineButton = (Button) dialog.findViewById(R.id.closeButton);
+	                // if decline button is clicked, close the custom dialog
+	                declineButton.setOnClickListener(new OnClickListener() {
+	                    @Override
+	                    public void onClick(View v) {
+	                        // Close dialog
+	                        dialog.dismiss();
+	                    }
+	                });
+				}
+			});
  
             return convertView;
     }
@@ -259,6 +301,75 @@ public void showDialog(View v)
 		}
 	});
 	builder.show();
+}
+public class WebService extends AsyncTask<Void, Void, Void> 
+{
+	
+	private final String NAMESPACE = "http://tempuri.org/";
+	private final String URL = "http://www.e-birge.com/EtkinlikWebServis.asmx";
+	private final String METOT_ISMI = "VerileriGonder";
+	
+	List<Etkinlik> liste_etkinlikler = new ArrayList<Etkinlik>(); 
+
+	/**
+	 * @param args
+	 */
+	
+	@Override
+    protected void onPostExecute(Void result) 
+    {
+    }
+
+	@Override
+	protected Void doInBackground(Void... arg0) {
+		// TODO Auto-generated method stub
+		EtkinlikBilgileriniGetirWebServis();
+		return null;
+	}
+
+	private void EtkinlikBilgileriniGetirWebServis() {
+		// TODO Auto-generated method stub
+		//Create request
+        SoapObject request = new SoapObject(NAMESPACE, METOT_ISMI);
+      //Create envelope
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.dotNet = true;
+        //Set output SOAP object
+        envelope.setOutputSoapObject(request);
+        //Create HTTP call object
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+        
+        try 
+        {
+        	//Invole web service
+            androidHttpTransport.call(NAMESPACE + METOT_ISMI, envelope);
+            //Get the response
+            SoapObject yanit = (SoapObject) envelope.getResponse();
+            int i_etkinlik_sayisi = yanit.getPropertyCount();
+            
+            for(int i=0; i<i_etkinlik_sayisi; i++)
+            {
+            	SoapObject gec_etkinlik = (SoapObject) yanit.getProperty(i);
+
+            	String name = gec_etkinlik.getPropertyAsString(0);
+            	String location = gec_etkinlik.getPropertyAsString(1);
+            	String organizer = gec_etkinlik.getPropertyAsString(2);
+            	String date_start = gec_etkinlik.getPropertyAsString(3);
+            	String date_end = gec_etkinlik.getPropertyAsString(4);
+            	String type = gec_etkinlik.getPropertyAsString(5);
+            	
+            	Etkinlik etkinlik = new Etkinlik(name, location, organizer, date_start, type, date_end);
+            	            	
+            	liste_etkinlikler.add(etkinlik);
+            }
+        }
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        
+	}
+
 }
 
 }

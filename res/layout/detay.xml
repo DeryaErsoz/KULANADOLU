@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" 
+    android:background="#ABABAB">
+  
+   
+     
+     <TextView
+         android:id="@+id/title_txt"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentTop="true"
+         android:layout_toRightOf="@+id/img_btn"
+         android:text="Title"
+         android:textSize="20sp" />
+     <TextView
+         android:id="@+id/date_txt"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/title_txt"
+         android:layout_toRightOf="@+id/img_btn"
+         android:text="Date"
+         android:textSize="20sp" />
+      <TextView
+         android:id="@+id/location_txt"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/date_txt"
+         android:layout_toRightOf="@+id/img_btn"
+         android:text="Location"
+         android:textSize="20sp" />
+     
+     <Button
+         android:id="@+id/closeButton"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentRight="true"
+         android:layout_below="@+id/img_btn"
+         android:layout_marginTop="50dp"
+         android:text=" Close " />
+
+     <Button
+         android:id="@+id/img_btn"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentTop="true"
+         android:layout_alignParentLeft="true"
+         android:background="@drawable/not" />
+
+</RelativeLayout>
