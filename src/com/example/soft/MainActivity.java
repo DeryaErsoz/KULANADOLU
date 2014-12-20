@@ -7,10 +7,14 @@ import com.example.soft.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+
 import java.util.ArrayList;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +30,8 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.provider.CalendarContract.Events;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -49,11 +55,17 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MainActivity extends Activity 
 {
 	private static final String WebserviceClient = null;
-	TextView date;
+	TextView myCalendarDate,location,title,organizator,eDate,sDate;
 	ImageButton imgDate; 
-	private DateFormat fmtDateAndTime = DateFormat.getDateInstance();
-   
+	
+	static String stumu,etumu,starih,szaman,calName,calOrganizator,calLocation;
+    int  syil, say ,sgun, ssaat, sdakika,eyil,eay,egun,esaat,edakika;
+	String[] spart1,spart2,spart3,epart1,epart2,epart3;
+	
    	private Calendar myCalendar = Calendar.getInstance();
+   	SimpleDateFormat fmtDateAndTime =new SimpleDateFormat("yyyy-MM-dd");
+   	//String formatted =fmtDateAndTime.format(myCalender.getTime());
+   	
    	DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
          	public void onDateSet(DatePicker view, int year, int monthOfYear,
                        	int dayOfMonth) {
@@ -64,7 +76,8 @@ public class MainActivity extends Activity
          	}
    	};
 	private void updateDate() {
-     	date.setText(fmtDateAndTime.format(myCalendar.getTime()));
+     	myCalendarDate.setText(fmtDateAndTime.format(myCalendar.getTime()));
+
 	}
 	final CharSequence[] items={"Bir saat önce!","Bir gün önce!","İki gün önce!"};
 	boolean[] itemsChecked = new boolean[items.length];
@@ -79,7 +92,7 @@ public class MainActivity extends Activity
                setContentView(R.layout.activity_main);
               
        	       Button Uygula =(Button) findViewById(R.id.btnUygula);
-       	       date =(TextView)findViewById(R.id.txtDate);
+       	       myCalendarDate =(TextView)findViewById(R.id.txtDate);
        	       imgDate =(ImageButton)findViewById(R.id.imgDate);
        	    imgDate.setOnClickListener(new View.OnClickListener() {
             	public void onClick(View v) {
@@ -139,14 +152,16 @@ public class MainActivity extends Activity
  
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
                             {
-                                    // When clicked, show a toast with the TextView text
+                            	
+                                     //When clicked, show a toast with the TextView text
                                     States state = (States) parent.getItemAtPosition(position);
                                     Toast.makeText(getApplicationContext(),"Clicked on Row: " + state.getName(), 
-                                    Toast.LENGTH_LONG).show();
+                                   Toast.LENGTH_LONG).show();
+                           
+          
                             }
                     });
             }
-            
          
  
 private class MyCustomAdapter extends ArrayAdapter<States>
@@ -206,6 +221,28 @@ private class MyCustomAdapter extends ArrayAdapter<States>
                                   if(  cb.isChecked()==true){
                                 	  _state.setSelected(cb.isChecked());
                                     showDialog(v);
+                                    Intent calIntent = new Intent(Intent.ACTION_INSERT);
+                                    calIntent.setData(CalendarContract.Events.CONTENT_URI);
+                                    calIntent.putExtra(Events.TITLE, calName);
+                                    calIntent.putExtra(Events.EVENT_LOCATION, calLocation);
+                                    calIntent.putExtra(Events.DESCRIPTION, "garip ");
+                                   // Toast.makeText(getApplicationContext(), "yıl : "+syil+" ay: "+say, Toast.LENGTH_SHORT).show();
+                                    Calendar startTime = Calendar.getInstance();
+                                    startTime.set(syil, say, sgun, ssaat, sdakika);
+                                 
+                                    
+                                    Calendar endTime = Calendar.getInstance();
+                                    endTime.set(eyil,eay,egun,esaat,edakika);
+                                    calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                                    startTime.getTimeInMillis());
+                                    Toast.makeText(getApplicationContext(), "yıl : "+syil+" ay: "+say, Toast.LENGTH_SHORT).show();
+                                    calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                                    endTime.getTimeInMillis());
+                                    startActivity(calIntent);
+                                    //bak askım tarihi alıp yılını burasonra gunu saat ve dk alıcaksın ok
+                                    //ya
+                                    //sonra ayını 
+
                                   }
                                   else{
                                 	  _state.setSelected(cb.isChecked());
@@ -231,12 +268,11 @@ private class MyCustomAdapter extends ArrayAdapter<States>
             holder.name.setChecked(state.isSelected());
  
             holder.name.setTag(state);
-            
-            convertView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					 // Create custom dialog object
+		
+            convertView.setOnClickListener(new OnClickListener(){
+            	public void onClick(View arg0){
+            		
+            		 // Create custom dialog object
 	                final Dialog dialog = new Dialog(MainActivity.this);
 	                // Include dialog.xml file
 	                dialog.setContentView(R.layout.detay);
@@ -245,12 +281,47 @@ private class MyCustomAdapter extends ArrayAdapter<States>
 	               
 	 
 	                // set values for custom dialog components - text, image and button
-	                TextView title = (TextView) dialog.findViewById(R.id.title_txt);
-	                title.setText("title");
-	                TextView date = (TextView) dialog.findViewById(R.id.date_txt);
-	                date.setText("date");
+	                TextView title = (TextView) dialog.findViewById(R.id.name_txt);
+                    calName  =title.getText().toString();
+	                TextView organizator = (TextView) dialog.findViewById(R.id.organiz_txt);
+	                calOrganizator  =organizator.getText().toString();
 	                TextView location = (TextView) dialog.findViewById(R.id.location_txt);
-	                location.setText("location");
+	                calLocation= location.getText().toString();
+	                TextView eDate = (TextView) dialog.findViewById(R.id.enddate_txt);
+	               
+	                etumu=eDate.getText().toString();
+	              
+	                epart1 = etumu.split(" ");
+	            	String etarih = epart1[0]; // 004
+	            	String ezaman = epart1[1];
+	            	 Toast.makeText(getApplicationContext(), ezaman, Toast.LENGTH_SHORT).show();
+	            	epart2=etarih.split("-");
+	            	 eyil=Integer.parseInt(epart2[0]);
+	            	 eay=Integer.parseInt(epart2[1]);
+	            	 egun=Integer.parseInt(epart2[2]);
+	            	epart3=ezaman.split(":");
+	            	 esaat=Integer.parseInt(epart3[0]);
+	            	 edakika=Integer.parseInt(epart3[1]);
+	                
+	                TextView sDate = (TextView) dialog.findViewById(R.id.startdate_txt);
+	                stumu=sDate.getText().toString();
+	               
+	                spart1 = stumu.split(" ");
+	            	String starih = spart1[0]; // 004
+	            	String szaman = spart1[1];
+	            	spart2=starih.split("-");
+	            	 syil=Integer.parseInt(spart2[0]);
+	            	 say=Integer.parseInt(spart2[1]);
+	            	 sgun=Integer.parseInt(spart2[2]);
+	            	spart3=szaman.split(":");
+	            	 ssaat=Integer.parseInt(spart3[0]);
+	            	 sdakika=Integer.parseInt(spart3[1]);
+	            
+	              //  Toast.makeText(getApplicationContext(), "tarih : "+starih+" zaman: "+szaman, Toast.LENGTH_SHORT).show();
+	              //  Toast.makeText(getApplicationContext(), "yıl : "+syil+" ay: "+say, Toast.LENGTH_SHORT).show();
+	               // Toast.makeText(getApplicationContext(), "saat : "+ssaat+" dak: "+sdakika, Toast.LENGTH_SHORT).show();
+
+	                
 	             
 	 
 	                dialog.show();
@@ -265,7 +336,11 @@ private class MyCustomAdapter extends ArrayAdapter<States>
 	                    }
 	                });
 				}
-			});
+			
+            
+            
+            
+    });
  
             return convertView;
     }
@@ -276,7 +351,7 @@ public void showDialog(View v)
 {
 	
 	AlertDialog.Builder builder=new AlertDialog.Builder(this);
-	builder.setTitle("Hatýrlatma ");
+	builder.setTitle("Hatırlatma ");
 	builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
         @Override

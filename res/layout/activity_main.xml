@@ -62,6 +62,7 @@
             android:id="@+id/imgDate"
             android:layout_width="20dp"
             android:layout_height="18dp"
+             android:layout_marginBottom="5dp"
             android:background="@drawable/logo2" />
 
         <Spinner
