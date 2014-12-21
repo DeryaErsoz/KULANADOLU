@@ -31,7 +31,7 @@
                 android:id="@+id/Name "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name "
+                android:text="Adı:"
                 android:textColor="#CC0000"
                 android:textSize="15sp" />
 
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:text=""
-                android:textColor="#CC0000"
+               android:textColor="#000000" 
                 android:textSize="15sp" />
 
         </TableRow>
@@ -55,7 +55,7 @@
                   android:id="@+id/Location"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Yeri "
+                  android:text="Yer:"
                   android:textColor="#CC0000"
                   android:textSize="15sp" />
 
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="#CC0000"
+                android:textColor="#000000" 
                 android:textSize="15sp" />
         </TableRow>
 
@@ -77,7 +77,7 @@
                 android:id="@+id/StartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Baslangic "
+                android:text="Başlangıç:"
                 android:textColor="#CC0000"
                 android:textSize="15sp" />
             
@@ -85,8 +85,8 @@
                 android:id="@+id/textStartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Baslangic"
-                android:textColor="#CC0000"
+                android:text=""
+                android:textColor="#000000" 
                 android:textSize="15sp" />
             
         </TableRow>
@@ -99,7 +99,7 @@
                  android:id="@+id/EndDate"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:text="Bitis "
+                 android:text="Bitiş:"
                  android:textColor="#CC0000"
                  android:textSize="15sp" />
 
@@ -107,8 +107,8 @@
                 android:id="@+id/textEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bitis" 
-                android:textColor="#CC0000"
+                android:text="" 
+                android:textColor="#000000" 
                 android:textSize="15sp"/>
         </TableRow>
          
@@ -121,7 +121,7 @@
                   android:id="@+id/Organizator"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Duzenleyen "
+                  android:text="Düzenleyen:"
                   android:textColor="#CC0000"
                   android:textSize="15sp" />
 
@@ -129,8 +129,8 @@
                 android:id="@+id/textOrganizator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Duzenleyen" 
-                android:textColor="#CC0000"
+                android:text="" 
+                android:textColor="#000000" 
                 android:textSize="15sp"/>
               </TableRow>
              
@@ -162,7 +162,6 @@
                    android:layout_marginBottom="10dp"
                   android:background="#CC0000"
                   android:text=" Kapat "
-                  
                   android:textColor="#FFFFFF" />
                   
               </RelativeLayout>
