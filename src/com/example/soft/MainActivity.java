@@ -3,54 +3,26 @@ package com.example.soft;
 
 import com.example.soft.MainActivity;
 import com.example.soft.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-
-import java.util.ArrayList;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
-
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.provider.CalendarContract.Events;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
  
 public class MainActivity extends Activity 
 {
@@ -83,17 +55,24 @@ public class MainActivity extends Activity
 	boolean[] itemsChecked = new boolean[items.length];
 	
  
-          MyCustomAdapter dataAdapter = null;
+         // MyCustomAdapter dataAdapter = null;
  
+          
             @Override
             public void onCreate(Bundle savedInstanceState)
             {
                super.onCreate(savedInstanceState);
                setContentView(R.layout.activity_main);
               
-       	       Button Uygula =(Button) findViewById(R.id.btnUygula);
+               
+               final ListView lv = (ListView) findViewById(R.id.listView1);
+               WebService etkinlikleri_getir = new WebService(getApplicationContext(), lv);
+           	   etkinlikleri_getir.execute();
+       	       
        	       myCalendarDate =(TextView)findViewById(R.id.txtDate);
        	       imgDate =(ImageButton)findViewById(R.id.imgDate);
+       	       
+       	       
        	    imgDate.setOnClickListener(new View.OnClickListener() {
             	public void onClick(View v) {
                    	new DatePickerDialog(MainActivity.this, d, myCalendar
@@ -102,20 +81,93 @@ public class MainActivity extends Activity
             	}
      	});
        	    
-       		String[] items = new String[] {"Sinema", "Tiyatro", "Sergi"};
+       		String[] items = new String[] {"- Herhangi -",
+       				"Açıkoturum",
+       				"Çalıştay",
+       				"Dia Gösterileri",
+       				"Eğitim",
+       				"Eğitim ve Tanıtım Fuarları",
+       				"Festival vb. Etkinlikler",
+       				"Film Gösterileri",
+       				"Folklor Gösterileri",
+       				"Geziler ve Turlar",
+       				"Gösteriler",
+       				"İmza Günleri",
+       				"Kampanyalar",
+       				"Karnaval",
+       				"Kokteyller ve Yemekler",
+       				"Konferanslar",
+       				"Kongreler",
+       				"Konser ve Dinletiler",
+       				"Kurslar",
+       				"Müzikal Gösteriler",
+       				"Opera ve Bale Gösterileri",
+       				"Oryantasyon",
+       				"Panayır",
+       				"Paneller",
+       				"Seminerler",
+       				"Sempozyumlar",
+       				"Şenlik",
+       				"Sergiler",
+       				"Şölen",
+       				"Söyleşiler",
+       				"Spor Etkinlikleri",
+       				"Tanıtım Aktiviteleri",
+       				"Tanıtımlar ve Turlar",
+       				"Tiyatro Gösterileri",
+       				"Toplantılar",
+       				"Törenler",
+       				"Yarışmalar"};
        		
        		
-       		Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+       		final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
        		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
        		            android.R.layout.simple_spinner_item, items);
        		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
        		spinner2.setAdapter(adapter);
+       		
+       		Button btn_uygula =(Button) findViewById(R.id.btnUygula);
+       		
+       		btn_uygula.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					String str_tur = spinner2.getSelectedItem().toString();
+					List<Etkinlik> liste = new ArrayList<Etkinlik>(); 
+					if(str_tur.contains("- Herhangi -"))
+					{
+						ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), WebService.liste_etkinlikler);
+				    	lv.setAdapter(adapter);
+					}
+					else
+					{
+						for(int i=0; i<WebService.liste_etkinlikler.size(); i++)
+						{
+							if(WebService.liste_etkinlikler.get(i).getType().contentEquals(str_tur))
+							{
+								liste.add(WebService.liste_etkinlikler.get(i));
+							}
+						}
+					
+					if(liste.size()==0)
+					{
+						Toast.makeText(getApplicationContext(), "Bu kategoriye ait etkinlik bulunamadı.", Toast.LENGTH_LONG).show();
+					}
+					
+					ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), liste);
+			    	lv.setAdapter(adapter);
+					}
+				}
+			});
                //Generate list View from ArrayList
-               displayListView();
+              // displayListView();
  
                //checkButtonClick();
  
             }
+            
+            /*
             
             private void displayListView()
             {
@@ -163,7 +215,8 @@ public class MainActivity extends Activity
                     });
             }
          
- 
+ */
+ /*           
 private class MyCustomAdapter extends ArrayAdapter<States>
 {
  
@@ -202,8 +255,8 @@ private class MyCustomAdapter extends ArrayAdapter<States>
                convertView = vi.inflate(R.layout.state_info, null);
  
               holder = new ViewHolder();
-              holder.code = (TextView) convertView.findViewById(R.id.code);
-              holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
+              holder.code = (TextView) convertView.findViewById(R.id.tur);
+              holder.name = (CheckBox) convertView.findViewById(R.id.cb);
              
              TextView tarih = (TextView) convertView.findViewById(R.id.tarih);  
              
@@ -345,7 +398,7 @@ private class MyCustomAdapter extends ArrayAdapter<States>
             return convertView;
     }
  
-}
+}*/
     
 public void showDialog(View v)
 {
@@ -377,74 +430,4 @@ public void showDialog(View v)
 	});
 	builder.show();
 }
-public class WebService extends AsyncTask<Void, Void, Void> 
-{
-	
-	private final String NAMESPACE = "http://tempuri.org/";
-	private final String URL = "http://www.e-birge.com/EtkinlikWebServis.asmx";
-	private final String METOT_ISMI = "VerileriGonder";
-	
-	List<Etkinlik> liste_etkinlikler = new ArrayList<Etkinlik>(); 
-
-	/**
-	 * @param args
-	 */
-	
-	@Override
-    protected void onPostExecute(Void result) 
-    {
-    }
-
-	@Override
-	protected Void doInBackground(Void... arg0) {
-		// TODO Auto-generated method stub
-		EtkinlikBilgileriniGetirWebServis();
-		return null;
-	}
-
-	private void EtkinlikBilgileriniGetirWebServis() {
-		// TODO Auto-generated method stub
-		//Create request
-        SoapObject request = new SoapObject(NAMESPACE, METOT_ISMI);
-      //Create envelope
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.dotNet = true;
-        //Set output SOAP object
-        envelope.setOutputSoapObject(request);
-        //Create HTTP call object
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
-        
-        try 
-        {
-        	//Invole web service
-            androidHttpTransport.call(NAMESPACE + METOT_ISMI, envelope);
-            //Get the response
-            SoapObject yanit = (SoapObject) envelope.getResponse();
-            int i_etkinlik_sayisi = yanit.getPropertyCount();
-            
-            for(int i=0; i<i_etkinlik_sayisi; i++)
-            {
-            	SoapObject gec_etkinlik = (SoapObject) yanit.getProperty(i);
-
-            	String name = gec_etkinlik.getPropertyAsString(0);
-            	String location = gec_etkinlik.getPropertyAsString(1);
-            	String organizer = gec_etkinlik.getPropertyAsString(2);
-            	String date_start = gec_etkinlik.getPropertyAsString(3);
-            	String date_end = gec_etkinlik.getPropertyAsString(4);
-            	String type = gec_etkinlik.getPropertyAsString(5);
-            	
-            	Etkinlik etkinlik = new Etkinlik(name, location, organizer, date_start, type, date_end);
-            	            	
-            	liste_etkinlikler.add(etkinlik);
-            }
-        }
-        catch (Exception e) 
-        {
-            e.printStackTrace();
-        }
-        
-	}
-
-}
-
 }

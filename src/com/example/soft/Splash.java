@@ -19,11 +19,7 @@ public class Splash extends Activity
             @Override public void run(){ 
                 try { 
                 	sleep(3000);  
-                	
-                	
-                	WebService etkinlikleri_getir = new WebService();
-                	etkinlikleri_getir.execute();
-                     
+
                         Intent i=new Intent(Splash.this,MainActivity.class);
                         startActivity(i);
                     } 

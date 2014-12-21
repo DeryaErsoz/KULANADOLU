@@ -1,3 +1,4 @@
+
 package com.example.soft;
 
 import java.util.ArrayList;
@@ -6,7 +7,11 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 public class WebService extends AsyncTask<Void, Void, Void> 
 {
@@ -15,20 +20,22 @@ public class WebService extends AsyncTask<Void, Void, Void>
 	private final String URL = "http://www.e-birge.com/EtkinlikWebServis.asmx";
 	private final String METOT_ISMI = "VerileriGonder";
 	
-	List<Etkinlik> liste_etkinlikler = new ArrayList<Etkinlik>(); 
+	Context icerik;
+	ListView etkinlikler_listesi;
+	public static List<Etkinlik> liste_etkinlikler = new ArrayList<Etkinlik>(); 
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public WebService(Context icerik, ListView etkinlikler_listesi)
+	{
+		this.icerik = icerik;
+		this.etkinlikler_listesi = etkinlikler_listesi;
+		
 	}
 	
 	@Override
     protected void onPostExecute(Void result) 
     {
-		
+		ListAdapter adaptorumuz= new EtkinlikAdapter(icerik, liste_etkinlikler);
+    	etkinlikler_listesi.setAdapter(adaptorumuz);
 		
     }
 
@@ -72,7 +79,7 @@ public class WebService extends AsyncTask<Void, Void, Void>
             	String date_start = gec_etkinlik.getPropertyAsString(3);
             	String date_end = gec_etkinlik.getPropertyAsString(4);
             	String type = gec_etkinlik.getPropertyAsString(5);
-            	
+            	name = name.substring(10);
             	Etkinlik etkinlik = new Etkinlik(name, location, organizer, date_start, type, date_end);
             	            	
             	liste_etkinlikler.add(etkinlik);

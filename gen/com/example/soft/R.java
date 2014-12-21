@@ -33,11 +33,9 @@ public final class R {
         public static final int tkvm=0x7f020008;
     }
     public static final class id {
-        public static final int altbaslik=0x7f070017;
+        public static final int adi=0x7f070017;
         public static final int btnUygula=0x7f070005;
-        public static final int checkBox1=0x7f070018;
         public static final int closeButton=0x7f070013;
-        public static final int code=0x7f070016;
         public static final int enddate_txt=0x7f070011;
         public static final int imageView1=0x7f070014;
         public static final int imgDate=0x7f070003;
@@ -57,6 +55,7 @@ public final class R {
         public static final int textView1=0x7f070000;
         public static final int textView2=0x7f070001;
         public static final int title_txt=0x7f070010;
+        public static final int tur=0x7f070016;
         public static final int txtDate=0x7f070002;
     }
     public static final class layout {
