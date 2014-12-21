@@ -84,19 +84,19 @@ public class EtkinlikAdapter extends BaseAdapter{
                 dialog.setTitle("Etkinlik Detayı");
                 
                 TextView title = (TextView) dialog.findViewById(R.id.textName);
-                title.setText("Adı: " + etkinlik.getName());
+                title.setText(etkinlik.getName());
                 
                 TextView location = (TextView) dialog.findViewById(R.id.textLocation);
-                location.setText("Yer: " + etkinlik.getLocation());
+                location.setText( etkinlik.getLocation());
                 
                 TextView startDate = (TextView) dialog.findViewById(R.id.textStartDate);
-                startDate.setText("Başlangıç Tarihi: " + etkinlik.getDate_start());
+                startDate.setText( etkinlik.getDate_start());
                 
                 TextView endDate = (TextView) dialog.findViewById(R.id.textEndDate);
-                endDate.setText("Bitiş Tarihi: " + etkinlik.getDate_end());
+                endDate.setText( etkinlik.getDate_end());
                 
                 TextView organizator = (TextView) dialog.findViewById(R.id.textOrganizator);
-                organizator.setText("Düzenleyen: " + etkinlik.getOrganizer());
+                organizator.setText( etkinlik.getOrganizer());
                 
                 Button declineButton = (Button) dialog.findViewById(R.id.closeButton);
                 declineButton.setOnClickListener(new View.OnClickListener() {
@@ -112,9 +112,9 @@ public class EtkinlikAdapter extends BaseAdapter{
                     public void onClick(View v) {
 
 	                    	Calendar cal = Calendar.getInstance();     
-	                        Intent intent = new Intent(Intent.ACTION_INSERT);
-	                        intent.setType("vnd.android.cursor.item/event");
 	                        
+	                        Intent intent = new Intent(Intent.ACTION_INSERT);
+                           intent.setData(CalendarContract.Events.CONTENT_URI);
 	                        intent.putExtra("allDay", false);
 	                        intent.putExtra("rrule", "FREQ=YEARLY");
 	                        intent.putExtra("title", etkinlik.getName());
@@ -134,9 +134,10 @@ public class EtkinlikAdapter extends BaseAdapter{
 	                    			Integer.valueOf(str_dizi_saat[0]), 
 	                    			Integer.valueOf(str_dizi_saat[1]));
 	                    	
-	                    	intent.putExtra("beginTime", beginTime.getTimeInMillis());
+	                    	//intent.putExtra("beginTime", beginTime.getTimeInMillis());
 	                    	
-	                    	
+                            intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
+                            
 	                        
 	                        String str_bit_tarih = etkinlik.getDate_end();
 	                        str_bit_tarih = str_bit_tarih.replace(".", ":");
@@ -150,9 +151,9 @@ public class EtkinlikAdapter extends BaseAdapter{
 	                    			Integer.valueOf(str_bit_dizi_tarih[0]), 
 	                    			Integer.valueOf(str_bit_dizi_saat[0]), 
 	                    			Integer.valueOf(str_bit_dizi_saat[1]));
+	                    	
 
-	                    	intent.putExtra("endTime", end.getTimeInMillis());
-
+	                    	 intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,end.getTimeInMillis());
 	                        MainActivity.icerik.startActivity(intent);
 
                     }

@@ -13,32 +13,50 @@
     android:background="#990000"
        
     >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp" 
         android:background="#990000">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/lintarih"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.20" >
+              <TextView
             android:id="@+id/textView1"
-            android:layout_width="95dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="10dp"
             android:layout_weight="0.20"
-            android:gravity="bottom"
-            android:text="Tarihler"
-            android:textColor="#000000" />
+            android:gravity="left"
+            android:text="TARIHLER"
+            android:textColor="#CCCCCC" />
+            
+        </LinearLayout>
 
-        <TextView
+        <LinearLayout
+             android:id="@+id/linetkinlih"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.20" >
+              <TextView
             android:id="@+id/textView2"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginRight="10dp"
             android:layout_weight="0.02"
-            android:gravity="bottom"
-            android:text="Etkinlikler"
-            android:textColor="#000000" />
+            android:gravity="left"
+            android:text="ETKİNLİKLER"
+            
+      
+            android:textColor="#CCCCCC" />
+        </LinearLayout>
+      
+        
 
     </LinearLayout>
     
@@ -47,9 +65,13 @@
         android:layout_height="60dp"
         android:background="#990000" >
 
-        <TextView
+       
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" >
+             <TextView
             android:id="@+id/txtDate"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginBottom="5dp"
             android:layout_marginRight="0dp"         
@@ -61,13 +83,18 @@
         <ImageButton
             android:id="@+id/imgDate"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
              android:layout_marginBottom="5dp"
             android:background="@drawable/logo2" />
+            
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" >
         <Spinner
             android:id="@+id/spinner2"
-            android:layout_width="80dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
@@ -84,6 +111,9 @@
              
              android:background="#CCCCCC"
              android:textColor="#000000"/>
+        </LinearLayout>
+
+        
     </LinearLayout>
 
     <ListView
@@ -95,7 +125,5 @@
     android:background="#CCCCCC">
 </ListView>
 </LinearLayout>
-
-
 
  </RelativeLayout>
