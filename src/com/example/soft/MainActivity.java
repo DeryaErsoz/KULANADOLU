@@ -29,12 +29,13 @@ public class MainActivity extends Activity
 {
 	
 	public static Context icerik;
-	TextView myCalendarDate,location,title,organizator,eDate,sDate;
+	 TextView myCalendarDate,location,title,organizator,eDate,sDate;
 	ImageButton imgDate; 
+	String[] dates;
 	
 	
    	private Calendar myCalendar = Calendar.getInstance();
-   	SimpleDateFormat fmtDateAndTime =new SimpleDateFormat("yyyy-MM-dd");
+   	SimpleDateFormat fmtDateAndTime =new SimpleDateFormat("dd.MM.yyyy");
 
    	
    	DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
@@ -63,6 +64,7 @@ public class MainActivity extends Activity
                super.onCreate(savedInstanceState);
                setContentView(R.layout.activity_main);
               
+               
                icerik = MainActivity.this;
                final ListView lv = (ListView) findViewById(R.id.listView1);
                WebService etkinlikleri_getir = new WebService(getApplicationContext(), lv);
@@ -120,6 +122,7 @@ public class MainActivity extends Activity
        		
        		
        		final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+       	
        		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
        		            android.R.layout.simple_spinner_item, items);
        		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,9 +135,50 @@ public class MainActivity extends Activity
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+				    
 					String str_tur = spinner2.getSelectedItem().toString();
-					List<Etkinlik> liste = new ArrayList<Etkinlik>(); 
+					
+					String date = myCalendarDate.getText().toString();
+							//Toast.makeText(getApplicationContext(), date, Toast.LENGTH_LONG).show();			
+					List<Etkinlik> liste = new ArrayList<Etkinlik>();
+					if(date.contains(" "))
+					{
+						ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), WebService.liste_etkinlikler);
+				    	lv.setAdapter(adapter);
+				    	Toast.makeText(getApplicationContext(), " ıfe girdi.", Toast.LENGTH_LONG).show();
+					}
+					
+					else
+					{
+						for(int i=0; i<WebService.liste_etkinlikler.size(); i++)
+						{ 
+								if(date.contentEquals(WebService.liste_etkinlikler.get(i).getDate_start().split(" ")[0]))
+								{
+								
+									liste.add(WebService.liste_etkinlikler.get(i));
+							
+							
+							}
+			
+						}
+					
+					if(liste.size()==0)
+					{
+						Toast.makeText(getApplicationContext(), "Bu tarihe ait etkinlik bulunamadı.", Toast.LENGTH_LONG).show();
+					}
+					
+					ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), liste);
+			    	lv.setAdapter(adapter);
+						
+				}
+				}
+				
+       		});
+					/*  tur sıralaması  asagıdaa !!!!!!!!!	
+					 * 
+					 * 	List<Etkinlik> liste = new ArrayList<Etkinlik>(); 
 					if(str_tur.contains("- Herhangi -"))
+							
 					{
 						ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), WebService.liste_etkinlikler);
 				    	lv.setAdapter(adapter);
@@ -156,11 +200,12 @@ public class MainActivity extends Activity
 					
 					ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), liste);
 			    	lv.setAdapter(adapter);
-					}
-				}
-			});
+					}*/
+				
+			
+       		}
  
-            }
+            
             
 
 public void showDialog(View v)
