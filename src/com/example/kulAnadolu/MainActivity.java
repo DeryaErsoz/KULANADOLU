@@ -1,8 +1,8 @@
 
-package com.example.soft;
+package com.example.kulAnadolu;
 
-import com.example.soft.MainActivity;
-import com.example.soft.R;
+import com.example.kulAnadolu.MainActivity;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -33,10 +33,11 @@ public class MainActivity extends Activity
 	ImageButton imgDate; 
 	String[] dates;
 	
-	
+	 static String date;
    	private Calendar myCalendar = Calendar.getInstance();
+   	
    	SimpleDateFormat fmtDateAndTime =new SimpleDateFormat("dd.MM.yyyy");
-
+   
    	
    	DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
          	public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -47,7 +48,10 @@ public class MainActivity extends Activity
                 	updateDate();
          	}
    	};
+   	
+   
 	private void updateDate() {
+		 
      	myCalendarDate.setText(fmtDateAndTime.format(myCalendar.getTime()));
 
 	}
@@ -64,13 +68,13 @@ public class MainActivity extends Activity
                super.onCreate(savedInstanceState);
                setContentView(R.layout.activity_main);
               
-               
+           	myCalendarDate =(TextView)findViewById(R.id.txtDate);
                icerik = MainActivity.this;
                final ListView lv = (ListView) findViewById(R.id.listView1);
                WebService etkinlikleri_getir = new WebService(getApplicationContext(), lv);
            	   etkinlikleri_getir.execute();
        	       
-       	       myCalendarDate =(TextView)findViewById(R.id.txtDate);
+       	       // final TextView myCalendarDate =(TextView)findViewById(R.id.txtDate);
        	       imgDate =(ImageButton)findViewById(R.id.imgDate);
        	       
        	       
@@ -141,101 +145,110 @@ public class MainActivity extends Activity
 					String date = myCalendarDate.getText().toString();
 							//Toast.makeText(getApplicationContext(), date, Toast.LENGTH_LONG).show();			
 					List<Etkinlik> liste = new ArrayList<Etkinlik>();
-					if(date.contains(" "))
+					List<Etkinlik> myList = new ArrayList<Etkinlik>();
+					
+					// //ilk acılışta tarih ve tur bosken hepsini getirir
+					if(date.contains(" ")&& str_tur.contains("- Herhangi -"))
 					{
 						ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), WebService.liste_etkinlikler);
 				    	lv.setAdapter(adapter);
-				    	Toast.makeText(getApplicationContext(), " ıfe girdi.", Toast.LENGTH_LONG).show();
+				    	Toast.makeText(getApplicationContext(), " 1. if", Toast.LENGTH_LONG).show();
 					}
 					
-					else
-					{
-						for(int i=0; i<WebService.liste_etkinlikler.size(); i++)
-						{ 
-								if(date.contentEquals(WebService.liste_etkinlikler.get(i).getDate_start().split(" ")[0]))
-								{
-								
-									liste.add(WebService.liste_etkinlikler.get(i));
-							
-							
-							}
-			
-						}
-					
-					if(liste.size()==0)
-					{
-						Toast.makeText(getApplicationContext(), "Bu tarihe ait etkinlik bulunamadı.", Toast.LENGTH_LONG).show();
-					}
-					
-					ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), liste);
-			    	lv.setAdapter(adapter);
-						
-				}
-				}
-				
-       		});
-					/*  tur sıralaması  asagıdaa !!!!!!!!!	
-					 * 
-					 * 	List<Etkinlik> liste = new ArrayList<Etkinlik>(); 
-					if(str_tur.contains("- Herhangi -"))
-							
-					{
-						ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), WebService.liste_etkinlikler);
-				    	lv.setAdapter(adapter);
-					}
-					else
+					// yalnız tarihe gore getirir tur bostur
+					if((str_tur.contains("- Herhangi -"))&& date.contains(date))
 					{
 						for(int i=0; i<WebService.liste_etkinlikler.size(); i++)
 						{
-							if(WebService.liste_etkinlikler.get(i).getType().contentEquals(str_tur))
-							{
-								liste.add(WebService.liste_etkinlikler.get(i));
-							}
+						if(date.contentEquals(WebService.liste_etkinlikler.get(i).getDate_start().split(" ")[0]))
+						{
+						
+							liste.add(WebService.liste_etkinlikler.get(i));
 						}
-					
-					if(liste.size()==0)
+						}
+				
+						ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), liste);
+						Toast.makeText(getApplicationContext(), " 2. if", Toast.LENGTH_LONG).show();
+				    	lv.setAdapter(adapter);
+				    	
+				    	
+					}
+				// Ture gore getirir,  ???? getiremıyo ama
+					if((str_tur !="- Herhangi -"&& date==" "))
 					{
-						Toast.makeText(getApplicationContext(), "Bu kategoriye ait etkinlik bulunamadı.", Toast.LENGTH_LONG).show();
+						for(int i=0; i<WebService.liste_etkinlikler.size(); i++)
+					
+					  {
+						if(WebService.liste_etkinlikler.get(i).getType().equals(str_tur))						
+						{
+							liste.add(WebService.liste_etkinlikler.get(i));
+						}
+						
 					}
 					
-					ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), liste);
-			    	lv.setAdapter(adapter);
-					}*/
+						ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), liste);
+				    	lv.setAdapter(adapter);
+					
+					}
+					
+					
+						
+						// ture ve tarıhe gore sıralama 
+						if (str_tur!="- Herhangi -" && date==date)
+							
+						{
+							for(int i=0; i<WebService.liste_etkinlikler.size(); i++)
+								
+							{
+								if(WebService.liste_etkinlikler.get(i).getType().contentEquals(str_tur))
+								{
+									liste.add(WebService.liste_etkinlikler.get(i));
+									for(int j=0; j<liste.size(); j++)
+										
+									{
+									if(liste.get(j).getDate_start().split(" ")[0].contentEquals(date))
+									{
+										myList.add(liste.get(j));
+									 
+										
+									}
+									}
+										
+								}
+								
+							}
+							ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), myList);
+							Toast.makeText(getApplicationContext(), " hepsi", Toast.LENGTH_LONG).show();
+					    	lv.setAdapter(adapter);
+							
+						}
+						/*else {
+							for(int i=0; i<WebService.liste_etkinlikler.size(); i++)
+								
+							  {
+								if(WebService.liste_etkinlikler.get(i).getType().contentEquals(str_tur))
+								{
+									liste.add(WebService.liste_etkinlikler.get(i));
+								}
+								
+							}
+							
+								ListAdapter adapter= new EtkinlikAdapter(getApplicationContext(), liste);
+						    	lv.setAdapter(adapter);
+							
+						}*/
+						
 				
-			
+						
+				}
+				
+       		});
+					
+					
+					
        		}
  
             
             
 
-public void showDialog(View v)
-{
-	
-	AlertDialog.Builder builder=new AlertDialog.Builder(this);
-	builder.setTitle("Hatırlatma ");
-	builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-        	//String selectedTech="Selected Tech - ";
-            for (int i = 0; i < items.length; i++) {
-            if (itemsChecked[i]) {
-                
-            	//selectedTech=selectedTech+items[i]+" ";
-                itemsChecked[i]=false;
-            }
-        }
-        
-        }
-    });
-	
-	builder.setMultiChoiceItems(items, new boolean[]{false,false,false}, new DialogInterface.OnMultiChoiceClickListener() {
-		
-		@Override
-		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-				itemsChecked[which]=isChecked;	
-		}
-	});
-	builder.show();
-}
 }
